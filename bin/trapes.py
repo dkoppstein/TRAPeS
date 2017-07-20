@@ -1,4 +1,4 @@
-#! /bin/env python
+#!usr/bin/env python2
 import sys
 import os
 import argparse
@@ -39,31 +39,35 @@ def runTCRpipe(genome, output, bam, unmapped, bases, strand, numIterations,thres
                                                                 "this folder, moving to the next folder\n")
                 sys.stderr.flush()
             else:
-                currFolder = os.path.abspath(os.path.dirname(sys.argv[0])) + '/'
-                reconstruction = currFolder + '/vdj.alignment'
+                currFolder = os.path.dirname(os.path.realpath(__file__))
+                reconstruction = os.path.join(currFolder, 'vdj.alignment')
                 if genome == 'hg38':
-                    fasta = currFolder + 'Data/hg38/hg38.TCR.fa'
-                    bed = currFolder + 'Data/hg38/hg38.TCR.bed'
-                    mapping = currFolder + 'Data/hg38/hg38.id.name.mapping.TCR.txt'
-                    aaF = currFolder + 'Data/hg38/hg38.TCR.conserved.AA.txt'
+                    data_dir = os.path.join(currFolder, '../share/trapes_data/hg38')
+                    fasta = os.path.join(data_dir, 'hg38.TCR.fa')
+                    bed = os.path.join(data_dir, 'hg38.TCR.bed')
+                    mapping = os.path.join(data_dir, 'hg38.id.name.mapping.TCR.txt')
+                    aaF = os.path.join(data_dir, 'hg38.TCR.conserved.AA.txt')
                 if genome == 'mm10':
-                    fasta = currFolder + 'Data/mm10/mm10.TCR.fa'
-                    bed = currFolder + 'Data/mm10/mm10.TCR.bed'
-                    mapping = currFolder + 'Data/mm10/mm10.gene.id.mapping.TCR.txt'
-                    aaF = currFolder + 'Data/mm10/mm10.conserved.AA.txt'
+                    data_dir = os.path.join(currFolder, '../share/trapes_data/mm10')
+                    fasta = os.path.join(data_dir, 'mm10.TCR.fa')
+                    bed = os.path.join(data_dir, 'mm10.TCR.bed')
+                    mapping = os.path.join(data_dir, 'mm10.gene.id.mapping.TCR.txt')
+                    aaF = os.path.join(data_dir, 'mm10.conserved.AA.txt')
                 if genome == 'mm10_ncbi':
-                    fasta = currFolder + 'Data/mm10_ncbi/mm10.TCR.fa'
-                    bed = currFolder + 'Data/mm10_ncbi/mm10.TCR.bed'
-                    mapping = currFolder + 'Data/mm10_ncbi/mm10.gene.id.mapping.TCR.txt'
-                    aaF = currFolder + 'Data/mm10_ncbi/mm10.conserved.AA.txt'
+                    data_dir = os.path.join(currFolder, '../share/trapes_data/mm10_ncbi')
+                    fasta = os.path.join(data_dir, 'mm10.TCR.fa')
+                    bed = os.path.join(data_dir, 'mm10.TCR.bed')
+                    mapping = os.path.join(data_dir, 'mm10.gene.id.mapping.TCR.txt')
+                    aaF = os.path.join(data_dir, 'mm10.conserved.AA.txt')
                 if genome == 'hg19':
-                    fasta = currFolder + 'Data/hg19/hg19.TCR.fa'
-                    bed = currFolder + 'Data/hg19/hg19.TCR.bed'
-                    mapping = currFolder + 'Data/hg19/hg19.gene.id.mapping.TCR.txt'
-                    aaF = currFolder + 'Data/hg19/hg19.conserved.AA.txt'
+                    data_dir = os.path.join(currFolder, '../share/trapes_data/hg19')
+                    fasta =  os.path.join(data_dir, 'hg19.TCR.fa')
+                    bed = os.path.join(data_dir, 'hg19.TCR.bed')
+                    mapping = os.path.join(data_dir, 'hg19.gene.id.mapping.TCR.txt')
+                    aaF = os.path.join(data_dir, 'hg19.conserved.AA.txt')
 
                 runSingleCell(fasta, bed, noutput, nbam, nunmapped, mapping, bases, strand, reconstruction, aaF , numIterations, thresholdScore,
-                            minOverlap, rsem, bowtie2, lowQ, samtools, top, byExp, readOverlap, oneSide)
+                              minOverlap, rsem, bowtie2, lowQ, samtools, top, byExp, readOverlap, oneSide)
                 opened = addCellToTCRsum(cellFolder, noutput, opened, tcrFout)
                 finalStatDict = addToStatDict(noutput, cellFolder, finalStatDict)
     sumFout = open(sumF + '.summary.txt','w')
@@ -1866,4 +1870,3 @@ if __name__ == '__main__':
                 args.iterations,args.score, args.overlap, args.rsem, args.bowtie2,
                   args.singleCell, args.path, args.sumF, args.lowQ, args.samtools, args.top, args.byExp, args.readOverlap,
                   args.oneSide)
-
